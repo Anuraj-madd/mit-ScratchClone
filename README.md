@@ -27,8 +27,8 @@ A modern, interactive web-based clone of MIT Scratch, built with React, Vite, an
 ### Installation
 1. **Clone the repository:**
    ```bash
-   git clone [<repository-url>](https://github.com/Anuraj-madd/mit-ScratchClone.git)
-   cd MIT-ScratchClone
+   git clone https://github.com/Anuraj-madd/mit-ScratchClone.git
+   cd mit-ScratchClone
    ```
 2. **Install dependencies:**
    ```bash
