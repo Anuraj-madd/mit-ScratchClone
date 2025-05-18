@@ -2,6 +2,9 @@
 
 A modern, interactive web-based clone of MIT Scratch, built with React, Vite, and Tailwind CSS. This project allows users to create, drag, and drop code blocks to control sprites on a stage, mimicking the block-based programming experience of Scratch.
 
+## Deployment : https://mit-scratch-clone-gold.vercel.app/
+## Demo : https://drive.google.com/file/d/1sA7oUqB2z7wUBwDPTJ3nh-LZGczyoCV6/view?usp=sharing
+
 ## Features
 - **Block-Based Programming:** Drag and drop motion, control, and looks blocks to build scripts visually.
 - **Sprite Management:** Add, remove, and select sprites (Cat, Frog, Penguin, Crab) with live preview.
