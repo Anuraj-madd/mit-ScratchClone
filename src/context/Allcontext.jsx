@@ -16,6 +16,8 @@ function Allcontext(props) {
   const [Repeat, setRepeat] = useState({}); 
   const [updatepreview, setupdatepreview] = useState(true);
   const [waitDurations, setWaitDurations] = useState({}); 
+  const [swappedPairs, setSwappedPairs] = useState({});
+
   const setupdatepreviewvalue = () => {
     setupdatepreview(!updatepreview);
     return updatepreview;
@@ -307,6 +309,7 @@ function Allcontext(props) {
 
   const swapSpritesIfClose = (currentSprites) => {
     const spritesToCheck = [...currentSprites]; 
+    let newSwappedPairsChanges = null;
 
     for (let i = 0; i < spritesToCheck.length; i++) {
       for (let j = i + 1; j < spritesToCheck.length; j++) {
@@ -317,23 +320,38 @@ function Allcontext(props) {
           continue;
         }
 
+        const pairKey = [spriteA.id, spriteB.id].sort().join('-');
         const distance = Math.sqrt(
           Math.pow(spriteA.position.x - spriteB.position.x, 2) +
             Math.pow(spriteA.position.y - spriteB.position.y, 2)
         );
-        if (distance <= 80) { 
-          console.log(
-            `Collision detected between ${spriteA.id} and ${spriteB.id}. Swapping their tasks.`
-          );
-          setMidArrays((prevMidArrays) => {
-            const newMidArrays = { ...prevMidArrays };
-            const tempMidArrayA = newMidArrays[spriteA.id] || [];
-            newMidArrays[spriteA.id] = newMidArrays[spriteB.id] || [];
-            newMidArrays[spriteB.id] = tempMidArrayA;
-            return newMidArrays;
-          });
+
+        if (distance <= 80) {
+          if (!swappedPairs[pairKey]) {
+            console.log(
+              `Collision detected between ${spriteA.id} and ${spriteB.id}. Swapping their tasks.`
+            );
+            setMidArrays((prevMidArrays) => {
+              const newMidArrays = { ...prevMidArrays };
+              const tempMidArrayA = newMidArrays[spriteA.id] || [];
+              newMidArrays[spriteA.id] = newMidArrays[spriteB.id] || [];
+              newMidArrays[spriteB.id] = tempMidArrayA;
+              return newMidArrays;
+            });
+            if (!newSwappedPairsChanges) newSwappedPairsChanges = {...swappedPairs};
+            newSwappedPairsChanges[pairKey] = true;
+          }
+        } else {
+          if (swappedPairs[pairKey]) {
+            console.log(`Sprites ${spriteA.id} and ${spriteB.id} are no longer colliding. Resetting swap status.`);
+            if (!newSwappedPairsChanges) newSwappedPairsChanges = {...swappedPairs};
+            delete newSwappedPairsChanges[pairKey];
+          }
         }
       }
+    }
+    if (newSwappedPairsChanges) {
+      setSwappedPairs(newSwappedPairsChanges);
     }
   };
 
@@ -405,6 +423,8 @@ function Allcontext(props) {
         waitDurations,
         setWaitDurationValue,
         updateBlockValue,
+        swappedPairs,
+        setSwappedPairs,
       }}
     >
       {props.children}
